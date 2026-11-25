@@ -17,6 +17,8 @@
       href="assets/images/logo.png"
       type="image/x-icon"
     />
+    <script src="assets/scripts/data.js" defer></script>
+    <script src="assets/scripts/calculator.js" defer></script>
     <script src="assets/scripts/script.js" defer></script>
   </head>
   <body>
@@ -174,14 +176,11 @@
 
               <div class="form-group">
                 <label for="tipo">Tipo de Panel:</label>
-                <div style="display: flex; align-items: center; gap: 0.5em">
+                <div class="field-row">
                   <select id="tipo">
                     <option selected disabled value="">
                       Selecciona el tipo de panel
                     </option>
-                    <option value="mono">Monocristalino (22%)</option>
-                    <option value="poli">Policristalino (18%)</option>
-                    <option value="delgada">Película delgada (12%)</option>
                   </select>
                   <span
                     class="tooltip-info"
@@ -200,18 +199,9 @@
 
               <div class="form-group">
                 <label for="municipio">Municipio:</label>
-                <div style="display: flex; align-items: center; gap: 0.5em">
+                <div class="field-row">
                   <select name="municipio" id="municipio" class="municipio">
                     <option value="">Selecciona el municipio</option>
-                    <option value="valledupar">Valledupar (380 COP/kWh)</option>
-                    <option value="santa marta">
-                      Santa Marta (390 COP/kWh)
-                    </option>
-                    <option value="cartagena">Cartagena (410 COP/kWh)</option>
-                    <option value="sincelejo">Sincelejo (370 COP/kWh)</option>
-                    <option value="barranquilla">
-                      Barranquilla (400 COP/kWh)
-                    </option>
                   </select>
                   <span
                     class="tooltip-info"
@@ -230,7 +220,7 @@
 
               <div class="form-group">
                 <label for="estrato">Estrato Socioeconómico:</label>
-                <div style="display: flex; align-items: center; gap: 0.5em">
+                <div class="field-row">
                   <select id="estrato">
                     <option value="">Selecciona tu estrato</option>
                     <!-- Las opciones se llenarán dinámicamente por JS para mostrar el valor de kWh -->
@@ -274,7 +264,9 @@
                 <input type="number" id="aniosAhorro" min="1" value="1" />
               </div>
 
-              <button class="btn" onclick="calcularAhorro()">
+              <div id="mensajeError" class="form-error" role="alert" hidden></div>
+
+              <button class="btn" type="button" id="btnCalcular">
                 🔍 Calcular Ahorro
               </button>
 
@@ -293,7 +285,7 @@
             <div class="results-section">
               <h3>📈 Resultados</h3>
 
-              <div id="results" style="display: none">
+              <div id="results" hidden>
                 <div class="result-cards-row">
                   <div class="result-card">
                     <div class="result-value" id="pagoActual">$0</div>
@@ -332,10 +324,7 @@
                 <canvas id="ahorroChart" width="400" height="200"></canvas>
               </div>
 
-              <div
-                id="ahorroNetoContainer"
-                style="display: none; margin-top: 20px"
-              >
+              <div id="ahorroNetoContainer" class="net-savings" hidden>
                 <strong
                   >Ahorro neto en <span id="aniosElegidos"></span> años
                   (descontando el precio del panel):</strong

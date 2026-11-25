@@ -16,11 +16,14 @@ reto-hackathon/
 ├── index.html
 ├── README.md
 ├── .gitignore
+├── .gitattributes
 └── assets/
     ├── images/
     │   └── logo.png
     ├── scripts/
-    │   └── script.js
+    │   ├── data.js         # municipios, tarifas, eficiencia de paneles
+    │   ├── calculator.js   # validación y fórmula (sin DOM)
+    │   └── script.js       # formulario, resultados y gráfico
     └── styles/
         └── style.css
 ```
@@ -40,6 +43,6 @@ HTML5 · CSS3 · JavaScript (vanilla) · [Chart.js 3.9.1](https://www.chartjs.or
 |-------|-------------|--------|
 | 1 | Estructura del repositorio y código original | ✅ |
 | 2 | Corrección de errores | ✅ |
-| 3 | Refactor del JavaScript | ⏳ |
+| 3 | Refactor del JavaScript | ✅ |
 | 4 | Mejora de diseño | ⏳ |
 | 5 | Accesibilidad, SEO y publicación | ⏳ |

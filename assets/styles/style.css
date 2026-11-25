@@ -508,3 +508,37 @@ select:focus {
 .footer a:hover {
   opacity: 0.8;
 }
+
+/* ---------- Etapa 3: clases que reemplazan estilos en línea ---------- */
+[hidden] {
+  display: none !important;
+}
+
+.field-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.net-savings {
+  margin-top: 20px;
+}
+
+.form-error {
+  background: #fdecea;
+  border: 1px solid #f5c2bd;
+  border-radius: 8px;
+  color: #8a1f14;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+}
+
+.form-error ul {
+  padding-left: 1.2em;
+}
+
+input[aria-invalid="true"],
+select[aria-invalid="true"] {
+  border-color: #c0392b;
+}

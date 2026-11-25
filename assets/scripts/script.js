@@ -1,297 +1,154 @@
-const datosConsumo = [
-  {
-    ciudad: "valledupar",
-    estrato: 1,
-    consumo_promedio: 100,
-    tarifa: 380,
-    valor_kwh: 380,
-    horas_sol: 12.4,
-  },
-  {
-    ciudad: "valledupar",
-    estrato: 2,
-    consumo_promedio: 130,
-    tarifa: 475,
-    valor_kwh: 475,
-    horas_sol: 12.4,
-  },
-  {
-    ciudad: "valledupar",
-    estrato: 3,
-    consumo_promedio: 160,
-    tarifa: 949,
-    valor_kwh: 949,
-    horas_sol: 12.4,
-  },
-  {
-    ciudad: "barranquilla",
-    estrato: 1,
-    consumo_promedio: 100,
-    tarifa: 400,
-    valor_kwh: 400,
-    horas_sol: 12.36,
-  },
-  {
-    ciudad: "barranquilla",
-    estrato: 2,
-    consumo_promedio: 130,
-    tarifa: 500,
-    valor_kwh: 500,
-    horas_sol: 12.36,
-  },
-  {
-    ciudad: "barranquilla",
-    estrato: 3,
-    consumo_promedio: 160,
-    tarifa: 980,
-    valor_kwh: 980,
-    horas_sol: 12.36,
-  },
-  {
-    ciudad: "santa marta",
-    estrato: 1,
-    consumo_promedio: 100,
-    tarifa: 390,
-    valor_kwh: 390,
-    horas_sol: 11.3,
-  },
-  {
-    ciudad: "santa marta",
-    estrato: 2,
-    consumo_promedio: 130,
-    tarifa: 490,
-    valor_kwh: 490,
-    horas_sol: 11.3,
-  },
-  {
-    ciudad: "santa marta",
-    estrato: 3,
-    consumo_promedio: 160,
-    tarifa: 960,
-    valor_kwh: 960,
-    horas_sol: 11.3,
-  },
-  {
-    ciudad: "cartagena",
-    estrato: 1,
-    consumo_promedio: 100,
-    tarifa: 410,
-    valor_kwh: 410,
-    horas_sol: 11.45,
-  },
-  {
-    ciudad: "cartagena",
-    estrato: 2,
-    consumo_promedio: 130,
-    tarifa: 505,
-    valor_kwh: 505,
-    horas_sol: 11.45,
-  },
-  {
-    ciudad: "cartagena",
-    estrato: 3,
-    consumo_promedio: 160,
-    tarifa: 995,
-    valor_kwh: 995,
-    horas_sol: 11.45,
-  },
-  {
-    ciudad: "sincelejo",
-    estrato: 1,
-    consumo_promedio: 100,
-    tarifa: 370,
-    valor_kwh: 370,
-    horas_sol: 11,
-  },
-  {
-    ciudad: "sincelejo",
-    estrato: 2,
-    consumo_promedio: 130,
-    tarifa: 465,
-    valor_kwh: 465,
-    horas_sol: 11,
-  },
-  {
-    ciudad: "sincelejo",
-    estrato: 3,
-    consumo_promedio: 160,
-    tarifa: 930,
-    valor_kwh: 930,
-    horas_sol: 11,
-  },
-];
+/**
+ * Interfaz del simulador (lee el formulario y pinta resultados).
+ * Requiere data.js y calculator.js cargados antes.
+ */
+const el = (id) => document.getElementById(id);
 
-let chart = null;
+const CAMPOS = ["tipo", "municipio", "estrato", "consumo", "precioPanel", "aniosAhorro"];
+const formatoCOP = new Intl.NumberFormat("es-CO", {
+  style: "currency",
+  currency: "COP",
+  maximumFractionDigits: 0,
+});
 
-// Eficiencia por tipo de panel
-const eficienciaPanel = {
-  mono: 22,
-  poli: 18,
-  delgada: 12,
-};
+let grafico = null;
 
-// Llenar dinámicamente el select de estrato según el municipio seleccionado
-const municipioSelect = document.getElementById("municipio");
-const estratoSelect = document.getElementById("estrato");
+/* ---------- Selects ---------- */
 
-municipioSelect.addEventListener("change", function () {
-  const municipio = this.value;
-  // Limpiar opciones actuales
-  estratoSelect.innerHTML = '<option value="">Selecciona tu estrato</option>';
+function agregarOpcion(select, valor, texto) {
+  const option = document.createElement("option");
+  option.value = valor;
+  option.textContent = texto;
+  select.appendChild(option);
+}
+
+function llenarTipos() {
+  const select = el("tipo");
+  for (const [clave, panel] of Object.entries(EFICIENCIA_PANEL)) {
+    agregarOpcion(select, clave, `${panel.nombre} (${panel.porcentaje}%)`);
+  }
+}
+
+function llenarMunicipios() {
+  const select = el("municipio");
+  for (const [clave, municipio] of Object.entries(MUNICIPIOS)) {
+    const tarifaEstrato1 = municipio.estratos[1].tarifa;
+    agregarOpcion(select, clave, `${municipio.nombre} (${tarifaEstrato1} COP/kWh)`);
+  }
+}
+
+function llenarEstratos() {
+  const select = el("estrato");
+  select.innerHTML = '<option value="">Selecciona tu estrato</option>';
+
+  const municipio = MUNICIPIOS[el("municipio").value];
   if (!municipio) return;
-  // Buscar los datos de consumo para el municipio seleccionado
-  const estratos = datosConsumo.filter((d) => d.ciudad === municipio);
-  estratos.forEach((d) => {
-    const option = document.createElement("option");
-    option.value = d.estrato;
-    option.textContent = `Estrato ${d.estrato} (${d.valor_kwh} COP/kWh)`;
-    estratoSelect.appendChild(option);
-  });
-});
 
-// Agregar decimales al precio del panel
-const inputPrecioPanel = document.getElementById("precioPanel");
+  for (const [estrato, datos] of Object.entries(municipio.estratos)) {
+    agregarOpcion(select, estrato, `Estrato ${estrato} (${datos.tarifa} COP/kWh)`);
+  }
+}
 
-inputPrecioPanel.addEventListener("input", function (e) {
-  // Obtener solo números
-  let valor = e.target.value.replace(/[^\d]/g, "");
+/** Sugiere el consumo promedio del estrato como placeholder. */
+function sugerirConsumo() {
+  const municipio = MUNICIPIOS[el("municipio").value];
+  const datos = municipio ? municipio.estratos[el("estrato").value] : null;
+  el("consumo").placeholder = datos ? `Ej: ${datos.consumoPromedio}` : "Ej: 150";
+}
 
-  // Si está vacío, no hacer nada
-  if (valor === "") {
-    e.target.value = "";
-    return;
+/* ---------- Precio con puntos de miles ---------- */
+
+function formatearPrecioMientrasEscribe(evento) {
+  const soloNumeros = evento.target.value.replace(/[^\d]/g, "");
+  evento.target.value = soloNumeros.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+/* ---------- Lectura y errores ---------- */
+
+function leerEntradas() {
+  return {
+    municipio: el("municipio").value,
+    estrato: parseInt(el("estrato").value, 10),
+    tipoPanel: el("tipo").value,
+    consumo: parseFloat(el("consumo").value),
+    precioPanel: parseFloat(el("precioPanel").value.replace(/\./g, "")),
+    anios: parseInt(el("aniosAhorro").value, 10),
+  };
+}
+
+function limpiarErrores() {
+  for (const id of CAMPOS) {
+    el(id).removeAttribute("aria-invalid");
+  }
+  const caja = el("mensajeError");
+  caja.hidden = true;
+  caja.replaceChildren();
+}
+
+function mostrarErrores(errores) {
+  limpiarErrores();
+
+  const lista = document.createElement("ul");
+  for (const error of errores) {
+    const item = document.createElement("li");
+    item.textContent = error.mensaje;
+    lista.appendChild(item);
+    el(error.campo).setAttribute("aria-invalid", "true");
   }
 
-  // Agregar puntos cada 3 dígitos
-  valor = valor.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  const caja = el("mensajeError");
+  caja.appendChild(lista);
+  caja.hidden = false;
 
-  // Actualizar el input
-  e.target.value = valor;
-});
+  el("results").hidden = true;
+  el("ahorroNetoContainer").hidden = true;
+  el(errores[0].campo).focus();
+}
 
-function calcularAhorro() {
-  // Obtener valores del formulario
-  const municipio = document.getElementById("municipio").value;
-  const estrato = parseInt(document.getElementById("estrato").value);
-  const consumoInput = parseFloat(document.getElementById("consumo").value);
-  const tipoPanel = document.getElementById("tipo").value;
-  const precioPanel = parseFloat(
-    document.getElementById("precioPanel").value.replace(/\./g, "")
-  );
-  const aniosAhorro = parseInt(document.getElementById("aniosAhorro").value);
-  // Usar eficiencia solo del objeto eficienciaPanel
-  let eficiencia = 0;
-  if (eficienciaPanel[tipoPanel]) {
-    eficiencia = eficienciaPanel[tipoPanel] / 100;
-  }
+/* ---------- Resultados ---------- */
 
-  // Validaciones
-  if (
-    !municipio ||
-    !estrato ||
-    isNaN(consumoInput) ||
-    consumoInput <= 0 ||
-    !eficiencia ||
-    isNaN(precioPanel) ||
-    precioPanel < 0 ||
-    isNaN(aniosAhorro) ||
-    aniosAhorro < 1
-  ) {
-    alert("Por favor, completa todos los campos e ingresa valores válidos.");
-    document.getElementById("results").style.display = "none";
-    document.getElementById("ahorroNetoContainer").style.display = "none";
-    return;
-  }
+function claseSegunSigno(valor) {
+  return "result-value " + (valor > 0 ? "savings-positive" : "savings-negative");
+}
 
-  // Buscar datos del municipio y estrato
-  const datos = datosConsumo.find(
-    (d) => d.ciudad === municipio && d.estrato === estrato
-  );
-  if (!datos) {
-    alert("Combinación de municipio y estrato no válida.");
-    document.getElementById("results").style.display = "none";
-    document.getElementById("ahorroNetoContainer").style.display = "none";
-    return;
-  }
+function mostrarResultados(r, anios) {
+  el("pagoActual").textContent = formatoCOP.format(r.pagoActual);
+  el("pagoConPanel").textContent = formatoCOP.format(r.pagoConPanel);
+  el("energiaGenerada").textContent = r.energiaMensual.toFixed(1) + " kWh";
 
-  // Cálculos
-  const horasSol = datos.horas_sol;
-  const tarifa = datos.valor_kwh;
+  el("ahorroMensual").textContent = formatoCOP.format(r.ahorroMensual);
+  el("ahorroMensual").className = claseSegunSigno(r.ahorroMensual);
 
-  // Fórmula: Ahorro = Horas_sol * Eficiencia_panel * 30 * Tarifa - Consumo_actual
-  const energiaGeneradaDiaria = horasSol * eficiencia; // kWh por día
-  const energiaGeneradaMensual = energiaGeneradaDiaria * 30; // kWh por mes
+  el("ahorroAnual").textContent = formatoCOP.format(r.ahorroAnual);
+  el("ahorroAnual").className = claseSegunSigno(r.ahorroAnual);
 
-  const costoActualMensual = consumoInput * tarifa;
-  const valorEnergiaGenerada = energiaGeneradaMensual * tarifa;
+  el("porcentajeAhorro").textContent = r.porcentajeAhorro.toFixed(1) + "%";
+  el("porcentajeAhorro").className = claseSegunSigno(r.porcentajeAhorro);
 
-  const ahorroMensual = Math.min(valorEnergiaGenerada, costoActualMensual);
-  const ahorroAnual = ahorroMensual * 12;
-  const porcentajeAhorro = (ahorroMensual / costoActualMensual) * 100;
+  el("aniosElegidos").textContent = anios;
+  el("ahorroNeto").textContent = formatoCOP.format(r.ahorroNeto);
+  el("ahorroNeto").className = claseSegunSigno(r.ahorroNeto);
 
-  // Mostrar resultados
-  document.getElementById("energiaGenerada").textContent =
-    energiaGeneradaMensual.toFixed(1) + " kWh";
-  document.getElementById("ahorroMensual").textContent =
-    "$" + ahorroMensual.toLocaleString("es-CO");
-  document.getElementById("ahorroMensual").className =
-    "result-value " +
-    (ahorroMensual > 0 ? "savings-positive" : "savings-negative");
-
-  document.getElementById("ahorroAnual").textContent =
-    "$" + ahorroAnual.toLocaleString("es-CO");
-  document.getElementById("ahorroAnual").className =
-    "result-value " +
-    (ahorroAnual > 0 ? "savings-positive" : "savings-negative");
-
-  document.getElementById("porcentajeAhorro").textContent =
-    porcentajeAhorro.toFixed(1) + "%";
-  document.getElementById("porcentajeAhorro").className =
-    "result-value " +
-    (porcentajeAhorro > 0 ? "savings-positive" : "savings-negative");
-
-  // Mostrar pago actual mensual sin panel
-  document.getElementById("pagoActual").textContent =
-    "$" + costoActualMensual.toLocaleString("es-CO");
-  document.getElementById("pagoActual").className = "result-value";
-
-  // Mostrar pago mensual con panel
-  const pagoConPanel = costoActualMensual - ahorroMensual;
-  document.getElementById("pagoConPanel").textContent =
-    "$" + pagoConPanel.toLocaleString("es-CO");
-  document.getElementById("pagoConPanel").className = "result-value";
-
-  document.getElementById("results").style.display = "block";
-
-  // Calcular ahorro neto en los años seleccionados
-  const ahorroTotal = ahorroMensual * 12 * aniosAhorro;
-  const ahorroNeto = ahorroTotal - precioPanel;
-  document.getElementById("ahorroNeto").textContent =
-    "$" + ahorroNeto.toLocaleString("es-CO");
-  document.getElementById("aniosElegidos").textContent = aniosAhorro;
-  document.getElementById("ahorroNetoContainer").style.display = "block";
-
-  // Crear gráfico
-  crearGrafico(costoActualMensual, ahorroMensual);
+  el("results").hidden = false;
+  el("ahorroNetoContainer").hidden = false;
 }
 
 function crearGrafico(costoActual, ahorro) {
-  const ctx = document.getElementById("ahorroChart").getContext("2d");
+  if (typeof Chart === "undefined") return; // Chart.js no cargó (sin internet)
 
-  if (chart) {
-    chart.destroy();
+  const ctx = el("ahorroChart").getContext("2d");
+  if (grafico) {
+    grafico.destroy();
   }
 
-  const costoConPaneles = costoActual - ahorro;
-
-  chart = new Chart(ctx, {
+  grafico = new Chart(ctx, {
     type: "bar",
     data: {
       labels: ["Sin Paneles Solares", "Con Paneles Solares"],
       datasets: [
         {
           label: "Pago mensual (COP)",
-          data: [costoActual, costoConPaneles],
+          data: [costoActual, costoActual - ahorro],
           backgroundColor: ["rgb(93, 130, 179)", "rgb(231, 243, 255)"],
           borderColor: ["rgb(93, 130, 179)", "rgb(231, 243, 255)"],
           borderWidth: 2,
@@ -304,24 +161,56 @@ function crearGrafico(costoActual, ahorro) {
         title: {
           display: true,
           text: "Comparativa de Costos",
-          font: {
-            size: 16,
-            weight: "bold",
-          },
+          font: { size: 16, weight: "bold" },
         },
-        legend: {
-          display: false,
-        },
+        legend: { display: false },
       },
       scales: {
         y: {
           beginAtZero: true,
-          title: {
-            display: true,
-            text: "Pago mensual (COP)",
-          },
+          title: { display: true, text: "Pago mensual (COP)" },
         },
       },
     },
   });
 }
+
+/* ---------- Acción principal ---------- */
+
+function calcular() {
+  const entradas = leerEntradas();
+  const errores = validarEntradas(entradas);
+
+  if (errores.length > 0) {
+    mostrarErrores(errores);
+    return;
+  }
+  limpiarErrores();
+
+  const municipio = MUNICIPIOS[entradas.municipio];
+  const datos = municipio.estratos[entradas.estrato];
+
+  const resultado = calcularSimulacion({
+    horasSol: municipio.horasSol,
+    eficiencia: EFICIENCIA_PANEL[entradas.tipoPanel].porcentaje / 100,
+    tarifa: datos.tarifa,
+    consumo: entradas.consumo,
+    precioPanel: entradas.precioPanel,
+    anios: entradas.anios,
+  });
+
+  mostrarResultados(resultado, entradas.anios);
+  crearGrafico(resultado.pagoActual, resultado.ahorroMensual);
+}
+
+/* ---------- Inicio ---------- */
+
+llenarTipos();
+llenarMunicipios();
+el("municipio").addEventListener("change", () => {
+  llenarEstratos();
+  sugerirConsumo();
+});
+el("estrato").addEventListener("change", sugerirConsumo);
+el("precioPanel").addEventListener("input", formatearPrecioMientrasEscribe);
+el("btnCalcular").addEventListener("click", calcular);
