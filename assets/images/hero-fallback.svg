@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="Casa con paneles solares bajo el sol">
+  <title>Casa con paneles solares bajo el sol</title>
+  <defs>
+    <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7fb0dd"/>
+      <stop offset="1" stop-color="#dcebf7"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3f6699"/>
+      <stop offset="1" stop-color="#2c4a73"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#cielo)"/>
+  <circle cx="660" cy="105" r="68" fill="#ffb81c"/>
+  <rect y="415" width="800" height="85" fill="#c9d9c4"/>
+  <rect x="190" y="255" width="420" height="165" fill="#f4f8fa"/>
+  <rect x="268" y="325" width="70" height="95" rx="4" fill="#5d82b3"/>
+  <rect x="440" y="295" width="115" height="70" rx="4" fill="#a9c6e2"/>
+  <line x1="497" y1="295" x2="497" y2="365" stroke="#f4f8fa" stroke-width="4"/>
+  <polygon points="150,260 280,128 520,128 650,260" fill="#1f2a3d"/>
+  <polygon points="215,238 305,150 495,150 585,238" fill="url(#panel)" stroke="#9fc0e6" stroke-width="3"/>
+  <g stroke="#9fc0e6" stroke-width="2" opacity="0.85">
+    <line x1="343" y1="150" x2="289" y2="238"/>
+    <line x1="381" y1="150" x2="363" y2="238"/>
+    <line x1="419" y1="150" x2="437" y2="238"/>
+    <line x1="457" y1="150" x2="511" y2="238"/>
+    <line x1="277" y1="178" x2="523" y2="178"/>
+    <line x1="246" y1="208" x2="554" y2="208"/>
+  </g>
+  <polygon points="305,150 340,150 255,238 215,238" fill="#ffffff" opacity="0.12"/>
+</svg>

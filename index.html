@@ -3,29 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Calcula cuánto puedes ahorrar en tu factura de energía con paneles solares en Valledupar, Santa Marta, Cartagena, Sincelejo y Barranquilla."
+    />
+    <meta name="theme-color" content="#2c4a73" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:title" content="Energías del Futuro" />
+    <meta
+      property="og:description"
+      content="Simulador de ahorro mensual con paneles solares para la Costa Caribe colombiana."
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
       rel="stylesheet"
     />
-    <title>Energías del Futuro</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <title>Energías del Futuro | Simulador de ahorro con paneles solares</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"
+      defer
+    ></script>
     <link rel="stylesheet" href="assets/styles/style.css" />
-    <link
-      rel="shortcut icon"
-      href="assets/images/logo.png"
-      type="image/x-icon"
-    />
+    <link rel="icon" href="assets/images/logo.png" type="image/png" />
     <script src="assets/scripts/data.js" defer></script>
     <script src="assets/scripts/calculator.js" defer></script>
     <script src="assets/scripts/script.js" defer></script>
   </head>
   <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
     <header class="header">
       <img
         src="assets/images/logo.png"
-        alt="Logo de la página"
+        alt="Logo de Energías del Futuro"
         class="header__logo"
       />
       <div class="header__text">
@@ -36,7 +48,7 @@
       </div>
     </header>
 
-    <main>
+    <main id="contenido" tabindex="-1">
       <section
         class="hero-section"
         id="intro"
@@ -58,6 +70,7 @@
         </div>
         <div class="hero-image">
           <img
+            decoding="async"
             src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e73efec5-5c30-46ef-9616-8e067e4b2010.png"
             alt="Paneles solares instalados sobre el tejado de una casa moderna bajo un cielo azul claro"
           />
@@ -68,8 +81,6 @@
         <div class="benefits-grid">
           <article
             class="benefit-card"
-            tabindex="0"
-            aria-label="Beneficio: Ahorro económico"
           >
             <span class="benefit-icon" aria-hidden="true">💸</span>
             <h3 class="benefit-title">Ahorro en la factura eléctrica</h3>
@@ -80,8 +91,6 @@
           </article>
           <article
             class="benefit-card"
-            tabindex="0"
-            aria-label="Beneficio: Energía renovable"
           >
             <span class="benefit-icon" aria-hidden="true">🌱</span>
             <h3 class="benefit-title">Energía limpia y sostenible</h3>
@@ -92,8 +101,6 @@
           </article>
           <article
             class="benefit-card"
-            tabindex="0"
-            aria-label="Beneficio: Mayor valor a tu propiedad"
           >
             <span class="benefit-icon" aria-hidden="true">🏡</span>
             <h3 class="benefit-title">Incrementa el valor de tu propiedad</h3>
@@ -104,8 +111,6 @@
           </article>
           <article
             class="benefit-card"
-            tabindex="0"
-            aria-label="Beneficio: Independencia energética"
           >
             <span class="benefit-icon" aria-hidden="true">⚡</span>
             <h3 class="benefit-title">Independencia energética</h3>
@@ -129,8 +134,6 @@
         <div class="pricing-list">
           <div
             class="price-card"
-            tabindex="0"
-            aria-label="Precio sistema pequeño"
           >
             <div class="price-amount">$7.000.000 - $10.000.000</div>
             <div class="price-label">Sistema Promedio (0.10-0.20 kW)</div>
@@ -141,8 +144,6 @@
           </div>
           <div
             class="price-card"
-            tabindex="0"
-            aria-label="Precio sistema mediano"
           >
             <div class="price-amount">$12.000.000 - $18.000.000</div>
             <div class="price-label">Sistema Mediano (0.27-0.40 kW)</div>
@@ -153,8 +154,6 @@
           </div>
           <div
             class="price-card"
-            tabindex="0"
-            aria-label="Precio sistema grande"
           >
             <div class="price-amount">$22.000.000 - $32.000.000</div>
             <div class="price-label">Sistema Grande (0.35-0.70 kW)</div>
@@ -167,6 +166,7 @@
       </section>
 
       <section
+        id="simulador"
         class="calculator-section"
         aria-label="Calculadora de ahorro energético mensual"
       >
@@ -188,18 +188,15 @@
                       Selecciona el tipo de panel
                     </option>
                   </select>
-                  <span
+                  <button
+                    type="button"
                     class="tooltip-info"
-                    tabindex="0"
-                    aria-label="¿Qué significa el porcentaje?"
+                    aria-label="Más información"
+                    aria-describedby="tip-1"
                   >
                     ℹ️
-                    <span class="tooltip-text"
-                      >El porcentaje indica la eficiencia típica de conversión
-                      de energía solar en electricidad para cada tipo de
-                      panel.</span
-                    >
-                  </span>
+                    <span class="tooltip-text" role="tooltip" id="tip-1">El porcentaje indica la eficiencia típica de conversión de energía solar en electricidad para cada tipo de panel.</span>
+                  </button>
                 </div>
               </div>
 
@@ -209,18 +206,15 @@
                   <select name="municipio" id="municipio" class="municipio">
                     <option value="">Selecciona el municipio</option>
                   </select>
-                  <span
+                  <button
+                    type="button"
                     class="tooltip-info"
-                    tabindex="0"
-                    aria-label="¿Qué significa el valor de kWh?"
+                    aria-label="Más información"
+                    aria-describedby="tip-2"
                   >
                     ℹ️
-                    <span class="tooltip-text"
-                      >El valor mostrado corresponde al costo por kWh para el
-                      estrato 1 en cada municipio. El valor real puede variar
-                      según el estrato seleccionado.</span
-                    >
-                  </span>
+                    <span class="tooltip-text" role="tooltip" id="tip-2">El valor mostrado corresponde al costo por kWh para el estrato 1 en cada municipio. El valor real puede variar según el estrato seleccionado.</span>
+                  </button>
                 </div>
               </div>
 
@@ -231,17 +225,15 @@
                     <option value="">Selecciona tu estrato</option>
                     <!-- Las opciones se llenarán dinámicamente por JS para mostrar el valor de kWh -->
                   </select>
-                  <span
+                  <button
+                    type="button"
                     class="tooltip-info"
-                    tabindex="0"
-                    aria-label="¿Qué significa el valor de kWh?"
+                    aria-label="Más información"
+                    aria-describedby="tip-3"
                   >
                     ℹ️
-                    <span class="tooltip-text"
-                      >El valor mostrado corresponde al costo por kWh para el
-                      estrato seleccionado en el municipio elegido.</span
-                    >
-                  </span>
+                    <span class="tooltip-text" role="tooltip" id="tip-3">El valor mostrado corresponde al costo por kWh para el estrato seleccionado en el municipio elegido.</span>
+                  </button>
                 </div>
               </div>
 
@@ -279,16 +271,16 @@
               <div class="info-box">
                 <h3>💡 Cómo funciona</h3>
                 <p>
-                  Este simulador utiliza la fórmula:
-                  <strong
-                    >Ahorro = Horas_sol × Eficiencia_panel × 30 × Tarifa -
-                    Consumo_actual</strong
-                  >
+                  La energía mensual se estima así:
+                  <strong>Horas_sol × Eficiencia_panel × 30</strong>. El ahorro
+                  es esa energía por la tarifa, sin superar lo que pagas hoy:
+                  <strong>mín(Energía × Tarifa, Consumo × Tarifa)</strong>.
+                  Son estimaciones, no una cotización.
                 </p>
               </div>
             </div>
 
-            <div class="results-section">
+            <div class="results-section" aria-live="polite">
               <h3>📈 Resultados</h3>
 
               <p id="estadoVacio" class="empty-state">

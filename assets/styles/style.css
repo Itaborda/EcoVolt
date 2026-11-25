@@ -501,8 +501,13 @@ select[aria-invalid="true"] {
 .tooltip-info {
   position: relative;
   display: inline-block;
-  cursor: pointer;
-  border-radius: 4px;
+  padding: 4px;
+  font: inherit;
+  line-height: 1;
+  background: none;
+  border: 0;
+  border-radius: 6px;
+  cursor: help;
 }
 
 .tooltip-text {
@@ -615,4 +620,26 @@ select[aria-invalid="true"] {
   * {
     transition: none !important;
   }
+}
+
+/* ---------- Etapa 5: accesibilidad ---------- */
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -64px;
+  z-index: 10;
+  padding: 10px 16px;
+  background: var(--ink);
+  color: var(--white);
+  border-radius: var(--radius-sm);
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 12px;
+  color: var(--white);
+}
+
+main:focus {
+  outline: none;
 }

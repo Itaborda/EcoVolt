@@ -180,6 +180,13 @@ function crearGrafico(costoActual, ahorro) {
       },
     },
   });
+
+  el("ahorroChart").setAttribute("role", "img");
+  el("ahorroChart").setAttribute(
+    "aria-label",
+    `Comparativa del pago mensual: sin paneles ${formatoCOP.format(costoActual)}, ` +
+      `con paneles ${formatoCOP.format(costoActual - ahorro)}`
+  );
 }
 
 /* ---------- Acción principal ---------- */
@@ -210,6 +217,28 @@ function calcular() {
   crearGrafico(resultado.pagoActual, resultado.ahorroMensual);
 }
 
+/* ---------- Accesibilidad y robustez ---------- */
+
+/** Esc cierra el tooltip que tenga el foco (WCAG 1.4.13). */
+document.addEventListener("keydown", (evento) => {
+  const activo = document.activeElement;
+  if (evento.key === "Escape" && activo.classList.contains("tooltip-info")) {
+    activo.blur();
+  }
+});
+
+/** Si la foto externa del hero no carga, usa la ilustración local. */
+function protegerImagenHero() {
+  const img = document.querySelector(".hero-image img");
+  if (!img) return;
+
+  const usarRespaldo = () => {
+    img.src = "assets/images/hero-fallback.svg";
+  };
+  img.addEventListener("error", usarRespaldo, { once: true });
+  if (img.complete && img.naturalWidth === 0) usarRespaldo();
+}
+
 /* ---------- Inicio ---------- */
 
 llenarTipos();
@@ -221,3 +250,4 @@ el("municipio").addEventListener("change", () => {
 el("estrato").addEventListener("change", sugerirConsumo);
 el("precioPanel").addEventListener("input", formatearPrecioMientrasEscribe);
 el("btnCalcular").addEventListener("click", calcular);
+protegerImagenHero();
