@@ -7,7 +7,7 @@
 }
 
 body {
-  font-family: Inter;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   background: #f4f8fa;
   line-height: 1.6;
   min-height: 100vh;
@@ -261,7 +261,7 @@ button:focus {
   color: #283143;
 }
 
-.additional-info h3 {
+.additional-info h2 {
   font-weight: 700;
   font-size: 1.8rem;
   margin-bottom: 16px;
@@ -290,13 +290,12 @@ button:focus {
   text-align: left;
 }
 
-.header h1 {
-  font-size: 2.5em;
+.calculator__header h2 {
+  font-size: 2em;
   margin-bottom: 10px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.header p {
+.calculator__header p {
   font-size: 1.1em;
   opacity: 0.9;
 }
@@ -315,7 +314,7 @@ button:focus {
   border: 2px solid #e9ecef;
 }
 
-.form-section h2 {
+.form-section > h3 {
   color: #495057;
   margin-bottom: 20px;
   font-size: 1.4em;
@@ -375,7 +374,7 @@ select:focus {
   border: 2px solid #e9ecef;
 }
 
-.results-section h2 {
+.results-section > h3 {
   color: #495057;
   margin-bottom: 20px;
   font-size: 1.4em;
@@ -417,11 +416,11 @@ select:focus {
 }
 
 .savings-positive {
-  color: #5d82b3;
+  color: #2e7d32;
 }
 
 .savings-negative {
-  color: #5d82b3;
+  color: #c0392b;
 }
 
 .info-box {
@@ -449,8 +448,8 @@ select:focus {
     padding: 20px;
   }
 
-  .header h1 {
-    font-size: 2em;
+  .calculator__header h2 {
+    font-size: 1.6em;
   }
 }
 

@@ -175,7 +175,9 @@ function calcularAhorro() {
   const estrato = parseInt(document.getElementById("estrato").value);
   const consumoInput = parseFloat(document.getElementById("consumo").value);
   const tipoPanel = document.getElementById("tipo").value;
-  const precioPanel = parseFloat(document.getElementById("precioPanel").value);
+  const precioPanel = parseFloat(
+    document.getElementById("precioPanel").value.replace(/\./g, "")
+  );
   const aniosAhorro = parseInt(document.getElementById("aniosAhorro").value);
   // Usar eficiencia solo del objeto eficienciaPanel
   let eficiencia = 0;
@@ -270,15 +272,10 @@ function calcularAhorro() {
   document.getElementById("ahorroNetoContainer").style.display = "block";
 
   // Crear gráfico
-  crearGrafico(
-    costoActualMensual,
-    ahorroMensual,
-    energiaGeneradaMensual,
-    consumoInput
-  );
+  crearGrafico(costoActualMensual, ahorroMensual);
 }
 
-function crearGrafico(costoActual, ahorro, consumo) {
+function crearGrafico(costoActual, ahorro) {
   const ctx = document.getElementById("ahorroChart").getContext("2d");
 
   if (chart) {
@@ -293,7 +290,7 @@ function crearGrafico(costoActual, ahorro, consumo) {
       labels: ["Sin Paneles Solares", "Con Paneles Solares"],
       datasets: [
         {
-          label: "Costo/Energía",
+          label: "Pago mensual (COP)",
           data: [costoActual, costoConPaneles],
           backgroundColor: ["rgb(93, 130, 179)", "rgb(231, 243, 255)"],
           borderColor: ["rgb(93, 130, 179)", "rgb(231, 243, 255)"],
@@ -321,7 +318,7 @@ function crearGrafico(costoActual, ahorro, consumo) {
           beginAtZero: true,
           title: {
             display: true,
-            text: "Pesos COP / kWh×10",
+            text: "Pago mensual (COP)",
           },
         },
       },
