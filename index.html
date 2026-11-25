@@ -28,10 +28,12 @@
         alt="Logo de la página"
         class="header__logo"
       />
-      <h1 class="header__title">Energías del Futuro</h1>
+      <div class="header__text">
+        <h1 class="header__title">Energías del Futuro</h1>
       <p class="header__description">
         Ahorra energía, protege el ambiente y reduce tu factura eléctrica
       </p>
+      </div>
     </header>
 
     <main>
@@ -69,6 +71,7 @@
             tabindex="0"
             aria-label="Beneficio: Ahorro económico"
           >
+            <span class="benefit-icon" aria-hidden="true">💸</span>
             <h3 class="benefit-title">Ahorro en la factura eléctrica</h3>
             <p class="benefit-description">
               Disminuye tus gastos energéticos hasta en un 70% y protege tu
@@ -80,6 +83,7 @@
             tabindex="0"
             aria-label="Beneficio: Energía renovable"
           >
+            <span class="benefit-icon" aria-hidden="true">🌱</span>
             <h3 class="benefit-title">Energía limpia y sostenible</h3>
             <p class="benefit-description">
               Contribuye a combatir el cambio climático usando energía renovable
@@ -91,6 +95,7 @@
             tabindex="0"
             aria-label="Beneficio: Mayor valor a tu propiedad"
           >
+            <span class="benefit-icon" aria-hidden="true">🏡</span>
             <h3 class="benefit-title">Incrementa el valor de tu propiedad</h3>
             <p class="benefit-description">
               Las viviendas con paneles solares instalados suelen valorarse más
@@ -102,6 +107,7 @@
             tabindex="0"
             aria-label="Beneficio: Independencia energética"
           >
+            <span class="benefit-icon" aria-hidden="true">⚡</span>
             <h3 class="benefit-title">Independencia energética</h3>
             <p class="benefit-description">
               Genera tu propia electricidad y reduce la dependencia de compañías
@@ -267,7 +273,7 @@
               <div id="mensajeError" class="form-error" role="alert" hidden></div>
 
               <button class="btn" type="button" id="btnCalcular">
-                🔍 Calcular Ahorro
+                Calcular ahorro
               </button>
 
               <div class="info-box">
@@ -284,6 +290,10 @@
 
             <div class="results-section">
               <h3>📈 Resultados</h3>
+
+              <p id="estadoVacio" class="empty-state">
+                Completa los datos y pulsa “Calcular ahorro” para ver tu comparación.
+              </p>
 
               <div id="results" hidden>
                 <div class="result-cards-row">
@@ -305,7 +315,7 @@
                   </div>
                 </div>
                 <div class="result-cards-row">
-                  <div class="result-card">
+                  <div class="result-card result-card--highlight">
                     <div class="result-value" id="ahorroMensual">$0</div>
                     <div class="result-label">Ahorro Mensual Estimado</div>
                   </div>
@@ -320,7 +330,7 @@
                 </div>
               </div>
 
-              <div class="chart-container">
+              <div id="chartContainer" class="chart-container" hidden>
                 <canvas id="ahorroChart" width="400" height="200"></canvas>
               </div>
 

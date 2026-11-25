@@ -102,6 +102,8 @@ function mostrarErrores(errores) {
 
   el("results").hidden = true;
   el("ahorroNetoContainer").hidden = true;
+  el("chartContainer").hidden = true;
+  el("estadoVacio").hidden = false;
   el(errores[0].campo).focus();
 }
 
@@ -129,12 +131,17 @@ function mostrarResultados(r, anios) {
   el("ahorroNeto").textContent = formatoCOP.format(r.ahorroNeto);
   el("ahorroNeto").className = claseSegunSigno(r.ahorroNeto);
 
+  el("estadoVacio").hidden = true;
   el("results").hidden = false;
   el("ahorroNetoContainer").hidden = false;
+  el("chartContainer").hidden = false;
 }
 
 function crearGrafico(costoActual, ahorro) {
-  if (typeof Chart === "undefined") return; // Chart.js no cargó (sin internet)
+  if (typeof Chart === "undefined") {
+    el("chartContainer").hidden = true; // Chart.js no cargó (sin internet)
+    return;
+  }
 
   const ctx = el("ahorroChart").getContext("2d");
   if (grafico) {

@@ -44,5 +44,5 @@ HTML5 · CSS3 · JavaScript (vanilla) · [Chart.js 3.9.1](https://www.chartjs.or
 | 1 | Estructura del repositorio y código original | ✅ |
 | 2 | Corrección de errores | ✅ |
 | 3 | Refactor del JavaScript | ✅ |
-| 4 | Mejora de diseño | ⏳ |
+| 4 | Mejora de diseño | ✅ |
 | 5 | Accesibilidad, SEO y publicación | ⏳ |
